@@ -15,9 +15,9 @@ keyfile, certfile = create_self_signed_cert()
 client = ssl.wrap_socket(client, keyfile=keyfile, certfile=certfile)
 
 if __name__ == "__main__":
-    print(f"Starting client on {HOST}:{PORT}")
     client.bind((HOST, PORT))
     client.connect((SERVER_HOST, SERVER_PORT))
+
     while True:
         from time import sleep
 
