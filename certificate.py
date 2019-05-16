@@ -4,8 +4,8 @@ from OpenSSL import crypto
 
 
 def create_self_signed_cert(name=None):
-    CERT_FILE = name + "_cert.pem" if name else "cert.pem"
-    KEY_FILE = name + "_key.pem" if name else "key.pem"
+    CERT_FILE = os.path.join("certificates", name + "_cert.pem" if name else "cert.pem")
+    KEY_FILE = os.path.join("certificates", name + "_key.pem" if name else "key.pem")
 
     key = crypto.PKey()
     key.generate_key(crypto.TYPE_RSA, 1024)
@@ -24,11 +24,11 @@ def create_self_signed_cert(name=None):
     cert.set_pubkey(key)
     cert.sign(key, "sha256")
 
-    with open(os.path.join("certificates", CERT_FILE), "wt") as f:
+    with open(CERT_FILE, "wt") as f:
         f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert).decode())
-    with open(os.path.join("certificates", KEY_FILE), "wt") as f:
+    with open(KEY_FILE, "wt") as f:
         f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key).decode())
-    return CERT_FILE, KEY_FILE
+    return KEY_FILE, CERT_FILE
 
 
 if __name__ == "__main__":
