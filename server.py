@@ -1,15 +1,17 @@
 import socket
 import ssl
 
+from certificate import create_self_signed_cert
+
 HOST = "127.0.0.1"
 PORT = 60000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-server = ssl.wrap_socket(
-    server, server_side=True, keyfile="server_key.pem", certfile="server_cert.pem"
-)
+
+keyfile, certfile = create_self_signed_cert(name="server")
+server = ssl.wrap_socket(server, server_side=True, keyfile=keyfile, certfile=certfile)
 
 if __name__ == "__main__":
     from time import sleep
